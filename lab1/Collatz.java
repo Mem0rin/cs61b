@@ -11,7 +11,7 @@ public class Collatz {
          * 示例：
          * {@code nextNumber(5)} 返回 16
          * {@code nextNumber(16)} 返回 8
-         * 
+         *
          * @source cs61b
          * @param n 原数字
          */
