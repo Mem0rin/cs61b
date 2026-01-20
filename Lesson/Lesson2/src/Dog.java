@@ -1,13 +1,14 @@
 /**
  * Created with IntelliJ IDEA
  * Description:
- *
+ * lesson2
  * @author : Mem0rin
  * Date: 2026-01-19
  * Time: 19:54
  */
 public class Dog {
     public int weightInPounds;
+    public static String binomen = "Canis familiaris"; //静态变量。
 
     public Dog(int w) {
         weightInPounds = w;
@@ -46,4 +47,16 @@ public class Dog {
         }
         return d2;
     }
+
+    /**
+     * 下面这段代码一半灵珠一半魔丸的，会报错。
+     * 1.weightInPounds没有定义。
+     * 2.由于这是一个静态方法，因此this也会出问题。
+    public static Dog maxDog(Dog d1, Dog d2) {
+        if (weightInPounds > d2.weightInPounds) {
+            return this;
+        }
+        return d2;
+    }
+     */
 }
