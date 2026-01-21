@@ -58,7 +58,7 @@ public class Model extends Observable {
         return board.size();
     }
 
-    /** Return true iff the game is over (there are no moves, or
+    /** Return true if the game is over (there are no moves, or
      *  there is a tile with value 2048 on the board). */
     public boolean gameOver() {
         checkGameOver();
@@ -137,7 +137,13 @@ public class Model extends Observable {
      *  Empty spaces are stored as null.
      * */
     public static boolean emptySpaceExists(Board b) {
-        // TODO: Fill in this function.
+        for (int i = 0; i < b.size(); i = i + 1) {
+            for (int j = 0; j < b.size(); j = j + 1) {
+                if (b.tile(i, j) == null) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -148,6 +154,17 @@ public class Model extends Observable {
      */
     public static boolean maxTileExists(Board b) {
         // TODO: Fill in this function.
+        for (int i = 0; i < b.size(); i = i + 1) {
+            for (int j = 0; j < b.size(); j = j + 1) {
+                Tile t = b.tile(i, j);
+                if (t == null) {
+                    continue;
+                }
+                if (t.value() == MAX_PIECE) {
+                   return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -157,8 +174,34 @@ public class Model extends Observable {
      * 1. There is at least one empty space on the board.
      * 2. There are two adjacent tiles with the same value.
      */
+
+    public static boolean adjacentTiles(Board b) {
+        for (int i = 0; i < b.size(); i = i + 1) {
+            for (int j = 0; j < b.size(); j = j + 1) {
+                Tile t = b.tile(i, j);
+
+                if (i < b.size() - 1){
+                    Tile t_i = b.tile(i + 1, j);
+                    if (t_i.value() == t.value()){
+                        return true;
+                    }
+                }
+                if (j < b.size() - 1){
+                    Tile t_j = b.tile(i, j + 1);
+                    if (t_j.value() == t.value()) {
+                        return true;
+                    }
+                }
+            }
+
+        }
+        return false;
+    }
+
     public static boolean atLeastOneMoveExists(Board b) {
-        // TODO: Fill in this function.
+        if (emptySpaceExists(b) || adjacentTiles(b)) {
+            return true;
+        }
         return false;
     }
 
