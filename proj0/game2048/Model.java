@@ -153,13 +153,13 @@ public class Model extends Observable {
             }
             if (t1 != null & t2 != null){
                 if (t1.value() == t2.value()) {
-                    move(col, row, t1);
-                    move(col, row, t2);
+                    board.move(col, row, t1);
+                    board.move(col, row, t2);
                     row -= 1;
                     score += board.tile(col, row).value();
                 } else {
-                    move(col, row, t1);
-                    move(col, row - 1, t2);
+                    board.move(col, row, t1);
+                    board.move(col, row - 1, t2);
                     row -= 2;
                 }
                 changed = true;
