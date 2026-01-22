@@ -106,6 +106,71 @@ public class Model extends Observable {
      *    value, then the leading two tiles in the direction of motion merge,
      *    and the trailing tile does not.
      * */
+
+    /** 通过条件语句分情况讨论*/
+
+    public boolean moveInColumn(int col){
+        boolean changed = false;
+        int row = board.size() - 1;
+        Tile t0 = board.tile(col, row);
+
+        for (int i = board.size() - 2; i >= 0; i = i - 1) {//第三行不会动也不会merge
+            Tile t = board.tile(col, i);
+            if (t == null) {//空格（不要管）
+                continue;
+            }
+            System.out.println("yes");
+            changed = true;
+            if (t0 == null) {//如果要跳进去的是空格
+                board.move(col, row, t);
+                t0 = t;
+            } else if (t.value() == t0.value()) {
+                board.move(col, row, t);
+                score += board.tile(col, row).value();
+                row = row - 1;
+                t0 = board.tile(col, row);
+            } else {
+                board.move(col, row - 1, t);
+                row = row - 1;
+                t0 = t;
+            }
+        }
+        return changed;
+    }
+
+    /** 通过for循环实现。*/
+
+    public boolean moveInColumnByFor(int col) {
+        Tile t1 = null;
+        Tile t2 = null;
+        int row = board.size() - 1;
+        boolean changed = false;
+        for (int i = board.size() - 1; i >= 0; i -= 1) {
+            if (board.tile(col, i) != null & t1 == null) {
+                t1 = board.tile(col, i);
+            } else if (board.tile(col, i) != null & t2 == null) {
+                t2 = board.tile(col, i);
+            }
+            if (t1 != null & t2 != null){
+                if (t1.value() == t2.value()) {
+                    move(col, row, t1);
+                    move(col, row, t2);
+                    row -= 1;
+                    score += board.tile(col, row).value();
+                } else {
+                    move(col, row, t1);
+                    move(col, row - 1, t2);
+                    row -= 2;
+                }
+                changed = true;
+                t1 = null;
+                t2 = null;
+            }
+
+        }
+        return changed;
+    }
+
     public boolean tilt(Side side) {
         boolean changed;
         changed = false;
@@ -113,7 +178,14 @@ public class Model extends Observable {
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
+        board.setViewingPerspective(side);
 
+        for (int c = 0; c < board.size(); c = c + 1) {
+            if (moveInColumn(c)) {
+                changed = true;
+            }
+        }
+        board.setViewingPerspective(Side.NORTH);
         checkGameOver();
         if (changed) {
             setChanged();
